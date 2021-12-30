@@ -1,0 +1,7 @@
+# Get That At https://iphub.info/
+api-key: "YOUR_API_KEY_1"
+# local cache
+use-cache: true
+# cache valid time(default 3 days)
+cache-time: 259200
+kick-message: "You have been blocked due to proxy usage.\n[ASN] [ISP] [COUNTRY_CODE] [COUNTRY_NAME] [HOSTNAME]"

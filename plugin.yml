@@ -1,0 +1,6 @@
+name: ProxyBlock
+version: 0.0.1
+api: 4.0.0
+author: Blackjack200
+website: https://github.com/Blackjack200/ProxyBlock.git
+main: blackjack200\proxyblock\ProxyBlock
