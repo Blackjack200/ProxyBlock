@@ -75,11 +75,10 @@ class CurlThread extends Thread {
 				}
 				if ($data->blocked()) {
 					$msg = $this->kickMessage;
-					$msg = str_replace("[ASN]", $data->ASN(), $msg);
-					$msg = str_replace("[ISP]", $data->ISP(), $msg);
-					$msg = str_replace("[COUNTRY_CODE]", $data->countryCode(), $msg);
-					$msg = str_replace("[COUNTRY_NAME]", $data->countryName(), $msg);
-					$msg = str_replace("[HOSTNAME]", $data->hostname(), $msg);
+					$msg = str_replace(
+						["[ASN]", "[ISP]", "[COUNTRY_CODE]", "[COUNTRY_NAME]", "[HOSTNAME]"],
+						[$data->ASN(), $data->ISP(), $data->countryCode(), $data->countryName(), $data->hostname()],
+						$msg);
 					$player->kick($msg);
 				}
 			}
@@ -112,8 +111,8 @@ class CurlThread extends Thread {
 		while ($retry-- > 0) {
 			$ch = curl_init("https://v2.api.iphub.info/ip/$addr");
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "X-Key: $token"]);
 			$buf = curl_exec($ch);
@@ -121,9 +120,8 @@ class CurlThread extends Thread {
 			if ($buf !== false) {
 				$this->logger->debug("Query $addr succeeded");
 				return $buf;
-			} else {
-				$this->logger->debug("query $addr failed retry: $retry");
 			}
+			$this->logger->debug("query $addr failed retry: $retry");
 		}
 		return null;
 	}
